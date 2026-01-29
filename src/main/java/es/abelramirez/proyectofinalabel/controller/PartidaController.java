@@ -2,11 +2,15 @@ package es.abelramirez.proyectofinalabel.controller;
 
 import es.abelramirez.proyectofinalabel.dto.request.PartidaRequest;
 import es.abelramirez.proyectofinalabel.dto.response.PartidaResponse;
+import es.abelramirez.proyectofinalabel.models.enums.EstadoJugador;
+import es.abelramirez.proyectofinalabel.models.enums.TipoJuego;
 import es.abelramirez.proyectofinalabel.service.PartidaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,5 +68,11 @@ public class PartidaController {
     public ResponseEntity<Void> addEnemigo(@PathVariable Long id, @PathVariable Long idEnemigo) {
         partidaService.anadirEnemigo(id, idEnemigo);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/busqueda")
+    public ResponseEntity<Page<PartidaResponse>> get(@RequestParam TipoJuego tipoJuego, @RequestParam EstadoJugador estadoJugador, Pageable pageable) {
+        return ResponseEntity.ok(partidaService.obtenerEstadoTipo(tipoJuego, estadoJugador, pageable));
+        
     }
 }

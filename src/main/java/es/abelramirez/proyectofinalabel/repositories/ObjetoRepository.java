@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ObjetoRepository extends JpaRepository<Objeto, Long> {
-    Optional<Objeto> findByNombreObjeto(String importado);
+    Optional<Objeto> findByNombre(String importado);
 }

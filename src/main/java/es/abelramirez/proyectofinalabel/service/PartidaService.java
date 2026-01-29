@@ -7,11 +7,15 @@ import es.abelramirez.proyectofinalabel.mappers.response.PartidaMapperReponse;
 import es.abelramirez.proyectofinalabel.models.entities.Enemigo;
 import es.abelramirez.proyectofinalabel.models.entities.Objeto;
 import es.abelramirez.proyectofinalabel.models.entities.Partida;
+import es.abelramirez.proyectofinalabel.models.enums.EstadoJugador;
+import es.abelramirez.proyectofinalabel.models.enums.TipoJuego;
 import es.abelramirez.proyectofinalabel.repositories.EnemigoRepository;
 import es.abelramirez.proyectofinalabel.repositories.ObjetoRepository;
 import es.abelramirez.proyectofinalabel.repositories.PartidaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,8 +58,16 @@ public class PartidaService {
 
     public PartidaRequest create(PartidaRequest request){
         Partida obj1 = partidaMapperRequest.toEntity(request);
+        if(obj1.getPersonaje().getNumCorazones() < 1){
+            throw new RuntimeException("No se pueden tener 0 corazones");
+        }
         Partida objNuevo = partidaRepository.save(obj1);
         return partidaMapperRequest.toDto(objNuevo);
+    }
+
+    public Page<PartidaResponse> obtenerEstadoTipo(TipoJuego tipoJuego, EstadoJugador estadoJugador, Pageable pageable) {
+        return partidaRepository.findByTipoJuegoAndEstadoJugador(tipoJuego,estadoJugador,pageable)
+                .map(partidaMapperReponse::toDto);
     }
 
     public PartidaResponse findById(Long id){

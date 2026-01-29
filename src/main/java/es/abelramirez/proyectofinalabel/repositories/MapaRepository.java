@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface MapaRepository extends JpaRepository<Mapa, Long> {
-    Optional<Mapa> findByNombreMapa(String importado);
+    Optional<Mapa> findByNombre(String importado);
 }
