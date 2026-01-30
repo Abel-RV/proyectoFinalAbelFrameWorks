@@ -12,4 +12,5 @@ public interface PersonajeMapperRequest {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Personaje partialUpdate(PersonajeRequest personajeRequest, @MappingTarget Personaje personaje);
+
 }
