@@ -5,6 +5,7 @@ package es.abelramirez.proyectofinalabel.service;
 import es.abelramirez.proyectofinalabel.dto.request.LoginRequest;
 import es.abelramirez.proyectofinalabel.dto.request.RegisterRequest;
 import es.abelramirez.proyectofinalabel.dto.response.JugadorResponse;
+import es.abelramirez.proyectofinalabel.mappers.request.JugadorMapperRequest;
 import es.abelramirez.proyectofinalabel.mappers.response.JugadorMapperResponse;
 import es.abelramirez.proyectofinalabel.models.entities.Jugador;
 import es.abelramirez.proyectofinalabel.repositories.JugadorRepository;
@@ -27,8 +28,9 @@ public class AuthService {
     private final JugadorRepository usuarioRepository;
     private final AuthenticationManager authenticationManager;
     private final JugadorMapperResponse  jugadorMapperResponse;
-    private final JwtService jwtService;;
+    private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final JugadorMapperRequest jugadorMapperRequest;
 
     public JugadorResponse obtenerPerfil(Authentication authentication) {
         String email = authentication.getName();
@@ -59,18 +61,14 @@ public class AuthService {
     }
 
     public ResponseEntity<?> register(RegisterRequest registerRequest) {
-        try {
-            // Verificar si el email ya existe
-            if (usuarioRepository.findByEmail(registerRequest.email()).isPresent()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(Map.of("error", "El email ya está registrado"));
-            }
-
-
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Error al registrar usuario"));
-        }
+       if(usuarioRepository.findByEmail(registerRequest.email()).isPresent()) {
+           return ResponseEntity
+                   .status(HttpStatus.BAD_REQUEST)
+                   .body(Map.of("error", "El email ya existe"));
+       }
+       Jugador jugador = jugadorMapperRequest.toEntity(registerRequest);
+       jugador.setPassword(passwordEncoder.encode(registerRequest.password()));
+       usuarioRepository.save(jugador);
+       return ResponseEntity.ok(jugadorMapperResponse.toDto(jugador));
     }
 }
