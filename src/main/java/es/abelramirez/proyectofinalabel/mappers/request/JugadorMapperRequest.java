@@ -18,6 +18,5 @@ public interface JugadorMapperRequest {
     @Mapping(target = "password", ignore = true)       // Ignoramos password para cifrarla en el servicio
     @Mapping(target = "id", ignore = true)             // Se genera automáticamente
     @Mapping(target = "partidas", ignore = true)       // Lista vacía al inicio
-    @Mapping(target = "authorities", ignore = true)    // Propiedad interna de UserDetails
     Jugador toEntity(RegisterRequest request);
 }

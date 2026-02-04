@@ -5,6 +5,7 @@ import es.abelramirez.proyectofinalabel.models.enums.*;
 import es.abelramirez.proyectofinalabel.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class DataInitializer implements CommandLineRunner {
     private final JugadorRepository jugadorRepository;
     private final PartidaRepository partidaRepository;
     private final MapaRepository mapaRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // Inyección de dependencias
     public DataInitializer(CategoriaRepository categoriaRepository,
@@ -29,7 +31,8 @@ public class DataInitializer implements CommandLineRunner {
                            EnemigoRepository enemigoRepository,
                            JugadorRepository jugadorRepository,
                            PartidaRepository partidaRepository,
-                           MapaRepository mapaRepository) {
+                           MapaRepository mapaRepository,
+                           PasswordEncoder passwordEncoder) {
         this.categoriaRepository = categoriaRepository;
         this.objetoRepository = objetoRepository;
         this.personajeRepository = personajeRepository;
@@ -37,6 +40,7 @@ public class DataInitializer implements CommandLineRunner {
         this.jugadorRepository = jugadorRepository;
         this.partidaRepository = partidaRepository;
         this.mapaRepository = mapaRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -147,10 +151,16 @@ public class DataInitializer implements CommandLineRunner {
         Jugador abel = new Jugador();
         abel.setNombre("Abel");
         abel.setEmail("abel@isaac.com");
+        abel.setPassword(passwordEncoder.encode("1234")); // <--- AHORA SÍ TIENE PASS
+        abel.setRoles("ADMIN"); // Asegúrate de tener este campo en tu entidad o lógica
 
         Jugador tester = new Jugador();
         tester.setNombre("ProGamer");
         tester.setEmail("gamer@test.com");
+        tester.setPassword(passwordEncoder.encode("1234")); // <--- PASS
+        tester.setRoles("USER");
+
+        jugadorRepository.saveAll(Arrays.asList(abel, tester));
 
         jugadorRepository.saveAll(Arrays.asList(abel, tester));
 
