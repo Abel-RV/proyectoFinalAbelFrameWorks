@@ -27,7 +27,7 @@ public class AuthService {
     private final JugadorRepository usuarioRepository;
     private final AuthenticationManager authenticationManager;
     private final JugadorMapperResponse  jugadorMapperResponse;
-    private final JwtService jwtService;
+    private final JwtService jwtService;;
     private final PasswordEncoder passwordEncoder;
 
     public JugadorResponse obtenerPerfil(Authentication authentication) {
