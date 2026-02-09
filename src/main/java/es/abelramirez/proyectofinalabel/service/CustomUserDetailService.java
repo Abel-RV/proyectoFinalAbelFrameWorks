@@ -1,6 +1,6 @@
 package es.abelramirez.proyectofinalabel.service;
 
-import com.abel.ejercicio2.repositories.UsuarioRepository;
+
 import es.abelramirez.proyectofinalabel.repositories.JugadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
