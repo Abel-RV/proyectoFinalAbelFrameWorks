@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/jugadores")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @Tag(name="Controlador de los jugadores",description = "Gestiona los jugadores")
 public class JugadorController {
