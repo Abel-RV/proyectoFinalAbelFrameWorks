@@ -4,14 +4,10 @@ import es.abelramirez.proyectofinalabel.dto.request.PartidaRequest;
 import es.abelramirez.proyectofinalabel.dto.response.PartidaResponse;
 import es.abelramirez.proyectofinalabel.mappers.request.PartidaMapperRequest;
 import es.abelramirez.proyectofinalabel.mappers.response.PartidaMapperReponse;
-import es.abelramirez.proyectofinalabel.models.entities.Enemigo;
-import es.abelramirez.proyectofinalabel.models.entities.Objeto;
-import es.abelramirez.proyectofinalabel.models.entities.Partida;
+import es.abelramirez.proyectofinalabel.models.entities.*;
 import es.abelramirez.proyectofinalabel.models.enums.EstadoJugador;
 import es.abelramirez.proyectofinalabel.models.enums.TipoJuego;
-import es.abelramirez.proyectofinalabel.repositories.EnemigoRepository;
-import es.abelramirez.proyectofinalabel.repositories.ObjetoRepository;
-import es.abelramirez.proyectofinalabel.repositories.PartidaRepository;
+import es.abelramirez.proyectofinalabel.repositories.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +23,8 @@ public class PartidaService {
     private final PartidaRepository partidaRepository;
     private final ObjetoRepository objetoRepository;
     private final EnemigoRepository enemigoRepository;
+    private final PersonajeRepository personajeRepository;
+    private final JugadorRepository  jugadorRepository;
     private final PartidaMapperRequest partidaMapperRequest;
     private final PartidaMapperReponse partidaMapperReponse;
 
@@ -58,12 +56,24 @@ public class PartidaService {
 
     public PartidaRequest create(PartidaRequest request){
         Partida obj1 = partidaMapperRequest.toEntity(request);
-        if(obj1.getPersonaje().getNumCorazones() < 1){
+
+        Personaje personaje = personajeRepository.findById(request.getPersonaje().getId())
+                .orElseThrow(() -> new RuntimeException("Personaje no encontrado"));
+
+        Jugador jugador = jugadorRepository.findById(request.getJugador().getId())
+                .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
+
+        obj1.setPersonaje(personaje);
+        obj1.setJugador(jugador);
+
+        if(personaje.getNumCorazones() < 1){
             throw new RuntimeException("No se pueden tener 0 corazones");
         }
+
         Partida objNuevo = partidaRepository.save(obj1);
         return partidaMapperRequest.toDto(objNuevo);
     }
+
 
     public Page<PartidaResponse> obtenerEstadoTipo(TipoJuego tipoJuego, EstadoJugador estadoJugador, Pageable pageable) {
         return partidaRepository.findByTipoJuegoAndEstadoJugador(tipoJuego,estadoJugador,pageable)
