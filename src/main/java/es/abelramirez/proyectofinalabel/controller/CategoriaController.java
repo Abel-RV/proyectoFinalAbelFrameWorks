@@ -23,7 +23,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/categorias")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 @Tag(name="Controlador de las categorías",description = "Gestiona las categorias")
 public class CategoriaController {
     private final CategoriaService categoriaService;

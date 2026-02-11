@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/mapas")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 @Tag(name="Controlador de los mapas",description = "Gestiona los mapas")
 public class MapaController {
     private final MapaService mapaService;

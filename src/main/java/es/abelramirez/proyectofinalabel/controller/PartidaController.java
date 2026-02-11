@@ -19,7 +19,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/partidas")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 @Tag(name="Controlador de las partidas",description = "Gestiona las partidas")
 public class PartidaController {
     private final PartidaService partidaService;

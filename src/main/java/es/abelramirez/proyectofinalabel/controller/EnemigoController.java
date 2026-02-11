@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping("/enemigos")
 @RequiredArgsConstructor
 @Tag(name="Controlador de los enemigos",description = "Gestiona los enemigos")
-@CrossOrigin(origins = "*")
 public class EnemigoController {
     private final EnemigoService enemigoService;
 

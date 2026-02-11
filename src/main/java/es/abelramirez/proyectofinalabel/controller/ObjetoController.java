@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/objetos")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 @Tag(name="Controlador de los objetos",description = "Gestiona los objetos")
 public class ObjetoController {
     private final ObjetoService objetoService;

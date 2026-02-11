@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/personajes")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 @Tag(name="Controlador de los personajes",description = "Gestiona los personajes jugables")
 public class PersonajeController {
     private final PersonajeService personajeService;
